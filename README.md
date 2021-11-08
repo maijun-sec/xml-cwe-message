@@ -1,6 +1,6 @@
 # xml-cwe-message
 
-used to extract some message from cwe xml file and insert all messages into database.
+used to extract some messages from cwe xml file and insert all messages into database.
 
 Now support all weaknesses, categories and views.
 
