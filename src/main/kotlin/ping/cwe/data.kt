@@ -27,10 +27,11 @@ data class Weakness(
     val abstraction: String?,
     val status: String?,
     val description: String?,
+    val language: String?,
     val version: String
 ) : Base() {
-    override fun asArray(): Array<Any?> = arrayOf(this.id, this.name, this.abstraction, this.status, this.description, this.version)
-    override fun insertSql() = "insert into weakness(id, name, abstraction, status, description, version) values(?, ?, ?, ?, ?, ?)"
+    override fun asArray(): Array<Any?> = arrayOf(this.id, this.name, this.abstraction, this.status, this.description, this.language, this.version)
+    override fun insertSql() = "insert into weakness(id, name, abstraction, status, description, language, version) values(?, ?, ?, ?, ?, ?, ?)"
 }
 
 data class RelatedWeakness(

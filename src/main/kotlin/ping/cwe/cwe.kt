@@ -3,6 +3,7 @@ package ping.cwe
 import org.dom4j.Element
 import org.dom4j.io.SAXReader
 import java.io.File
+import java.lang.StringBuilder
 import java.util.stream.Collectors
 
 class CweExtractor {
@@ -112,8 +113,9 @@ class CweExtractor {
             val abstraction = elementAttributeValue(weaknessElement, "Abstraction")
             val status = elementAttributeValue(weaknessElement, "Status")
             val description = elementSubElementValue(weaknessElement, "Description")
+            val language = extractWeaknessLanguage(weaknessElement)
             id?.let {
-                val weakness = Weakness(it.toInt(), name, abstraction, status, normalize(description), this.version!!)
+                val weakness = Weakness(it.toInt(), name, abstraction, status, normalize(description), language, this.version!!)
                 this.weaknesses.add(weakness)
 
                 val relatedWeaknessesElement = weaknessElement.element("Related_Weaknesses")
@@ -122,6 +124,25 @@ class CweExtractor {
                 }
             }
         }
+    }
+
+    private fun extractWeaknessLanguage(weaknessElement: Element): String {
+        val language = StringBuilder()
+        val applicationPlatformElement = weaknessElement.element("Applicable_Platforms")
+        if (applicationPlatformElement != null) {
+            val languageElements = applicationPlatformElement.elements("Language")
+            languageElements?.forEach {
+                val name = elementAttributeValue(it, "Name")
+                val clazz = elementAttributeValue(it, "Class")
+                name?.let { language.append(name).append(",") }
+                clazz?.let { language.append(clazz).append(",") }
+            }
+        }
+
+        if (language.isEmpty()) {
+            return language.toString()
+        }
+        return language.substring(0, language.length - 1)
     }
 
     private fun extractRelatedWeakness(weaknessId: Int, relatedWeaknessesElement: Element) {
@@ -159,7 +180,7 @@ class CweExtractor {
             return null
         }
 
-        val lst = line.split("\r\n")
-        return lst.stream().map { line.trim() }.collect(Collectors.joining(" "))
+        val lst = line.split("\r\n", "\r", "\n")
+        return lst.stream().map { it.trim() }.filter { it.isNotEmpty() }.collect(Collectors.joining(" "))
     }
 }
