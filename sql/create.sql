@@ -4,6 +4,7 @@ CREATE TABLE `weakness` (
   `abstraction` varchar(20) DEFAULT NULL,
   `status` varchar(20) DEFAULT NULL,
   `description` text CHARACTER SET latin1 COLLATE latin1_swedish_ci,
+  `likelihood_of_exploit` varchar (50) DEFAULT NULL,
   `language` varchar(50) DEFAULT NULL,
   `version` varchar(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;

@@ -113,9 +113,10 @@ class CweExtractor {
             val abstraction = elementAttributeValue(weaknessElement, "Abstraction")
             val status = elementAttributeValue(weaknessElement, "Status")
             val description = elementSubElementValue(weaknessElement, "Description")
+            val likelihoodOfExploit = elementSubElementValue(weaknessElement, "Likelihood_Of_Exploit")
             val language = extractWeaknessLanguage(weaknessElement)
             id?.let {
-                val weakness = Weakness(it.toInt(), name, abstraction, status, normalize(description), language, this.version!!)
+                val weakness = Weakness(it.toInt(), name, abstraction, status, normalize(description), likelihoodOfExploit, language, this.version!!)
                 this.weaknesses.add(weakness)
 
                 val relatedWeaknessesElement = weaknessElement.element("Related_Weaknesses")
